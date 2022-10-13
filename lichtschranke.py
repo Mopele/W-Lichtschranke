@@ -1,6 +1,3 @@
-# Importing Libraries
-# creating executable:
-##      python -m PyInstaller --onefile .\lichtschranke.py
 import ctypes
 import serial
 from serial.tools import list_ports
@@ -51,7 +48,11 @@ def listener(video_trigger, sensor_lock, com_port):
         print(f"Arduino not connected on port {com_port}: {str(e)}")
         sys.exit()
     while True:
-        if(arduino.readline().decode("utf-8").replace("\n", "").replace("\r", "") == "Trigger"):
+        try:
+            message = arduino.readline().decode("utf-8")
+        except:
+            continue
+        if(message.replace("\n", "").replace("\r", "") == "Trigger"):
             print("Trigger")
             if sensor_lock.value: video_trigger.value = True
 
@@ -76,7 +77,7 @@ def handle_request(data):
 
 if __name__ == "__main__":
     for arg in sys.argv:
-        if arg.startswith("COM"): com_port = sys.argv[sys.argv.index(arg)]
+        if arg.startswith("COM") or arg.startswith('/dev'): com_port = sys.argv[sys.argv.index(arg)]
         else: com_port = None
         if arg == "portscan":
             portscan()
@@ -91,7 +92,7 @@ if __name__ == "__main__":
             print("")
             print("Drivers needed: https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers")
             sys.exit()
-
+    print(com_port)
     p = Process(target=listener, args=(video_trigger, sensor_lock, com_port))
     p.start()
     try:
