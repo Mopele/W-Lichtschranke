@@ -1,0 +1,74 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    var current_video_id = 0;
+    var played_videos = [];
+
+    function generateRangom(low, up, exclude) {
+        var num = Math.floor(Math.random() * (up - low + 1)) + low;
+        return exclude.indexOf(num) > -1 ? generateRangom(low, up, exclude) : num;
+    }
+
+    function hide(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+    
+    function show(id) {
+        document.getElementById(id).style.display = 'block';
+    }
+
+    function stopVideo(id) {
+        var video = document.getElementById("video_"+id);
+        video.pause();
+        video.currentTime = 0;
+        hide("video_"+id);
+    }
+
+    function startVideo(id) {
+        var video = document.getElementById("video_"+current_video_id);
+        video.play();
+        show("video_"+current_video_id);
+    }
+
+    var socket = io();
+    setInterval(() => {
+        socket.emit('request trigger', "placeholder");
+    }, 100);
+
+    socket.on('trigger', function() {
+        if (current_video_id > 0) {
+            stopVideo(current_video_id);
+        }
+        if (played_videos.length > 5) {
+            played_videos = [];
+        }
+        current_video_id = generateRangom(1, 6, played_videos);
+        startVideo(current_video_id);
+        played_videos.push(current_video_id);
+    });
+    
+
+</script>
+
+<video muted style="position: fixed;right: 0;bottom: 0;min-width: 100%; min-height: 100%; display: none;" id="video_1">
+    <source src="{{ url_for('static', filename="1.mp4") }}" type="video/mp4">
+</video>
+
+<video muted style="position: fixed;right: 0;bottom: 0;min-width: 100%; min-height: 100%; display: none;" id="video_2">
+    <source src="{{ url_for('static', filename="2.mp4") }}" type="video/mp4">
+</video>
+
+<video muted style="position: fixed;right: 0;bottom: 0;min-width: 100%; min-height: 100%; display: none;" id="video_3">
+    <source src="{{ url_for('static', filename="3.mp4") }}" type="video/mp4">
+</video>
+
+<video muted style="position: fixed;right: 0;bottom: 0;min-width: 100%; min-height: 100%; display: none;" id="video_4">
+    <source src="{{ url_for('static', filename="4.mp4") }}" type="video/mp4">
+</video>
+
+<video muted style="position: fixed;right: 0;bottom: 0;min-width: 100%; min-height: 100%; display: none;" id="video_5">
+    <source src="{{ url_for('static', filename="5.mp4") }}" type="video/mp4">
+</video>
+
+<video muted style="position: fixed;right: 0;bottom: 0;min-width: 100%; min-height: 100%; display: none;" id="video_6">
+    <source src="{{ url_for('static', filename="6.mp4") }}" type="video/mp4">
+</video>

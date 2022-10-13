@@ -1,0 +1,13 @@
+<style>
+    .button {
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+</style>
+Sensor Currently is: {{ sensor_state }}
+<a href="{{ url_for('toggle_sensor')}}"><input type=”button” value="Unlock Sensor" class="button"></a> 
