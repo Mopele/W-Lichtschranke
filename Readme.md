@@ -33,3 +33,4 @@ Wenn sie die Testversion öffnen wollen geben sie `localhost:3000/test` ein.
 Wenn sie den Sensor abschalten wollen geben sie `localhost:3000/control` ein.
 
 Um die Software auszuschalten führen sie in Powershell die Tastenkombi STRG+C aus.
+Um die Videos zu ändern ersetzen sie einfach die Videos in dem Staic ordner mit ihren eigenen. Dazu nutzen sie bitte nur .mp4 formate und benennen die Videos identisch.
